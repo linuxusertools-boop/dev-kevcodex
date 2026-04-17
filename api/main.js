@@ -2,33 +2,40 @@ import fs from 'fs';
 import path from 'path';
 
 export default async function handler(req, res) {
-    const { feature } = req.query;
+    // Tentukan path folder plugins secara absolut
     const pluginsDir = path.join(process.cwd(), 'plugins');
+    const { feature } = req.query;
 
-    // Endpoint untuk mendapatkan daftar semua plugin (untuk UI)
-    if (req.method === 'GET' && !feature) {
-        try {
-            const pluginFiles = fs.readdirSync(pluginsDir).filter(file => file.endsWith('.js'));
-            const loadedPlugins = await Promise.all(pluginFiles.map(async (file) => {
-                const fileName = file.replace('.js', '');
-                const pluginPath = path.join(process.cwd(), 'plugins', file);
-                const { config } = await import(`file://${pluginPath}`);
-                return { id: fileName, ...config };
+    try {
+        // 1. Logika untuk UI (ambil daftar semua plugin)
+        if (!feature) {
+            const pluginFiles = fs.readdirSync(pluginsDir).filter(f => f.endsWith('.js'));
+            const data = await Promise.all(pluginFiles.map(async (file) => {
+                const { config } = await import(`../plugins/${file}`);
+                return { id: file.replace('.js', ''), ...config };
             }));
-            return res.status(200).json(loadedPlugins);
-        } catch (e) {
-            return res.status(500).json({ error: "Gagal memuat daftar plugin" });
+            return res.status(200).json(data);
         }
-    }
 
-    // Endpoint untuk menjalankan fitur spesifik
-    if (feature) {
-        try {
-            const pluginPath = path.join(process.cwd(), 'plugins', `${feature}.js`);
-            const plugin = await import(`file://${pluginPath}`);
-            return plugin.default(req, res);
-        } catch (e) {
-            return res.status(404).json({ status: false, message: "Fitur tidak ditemukan" });
+        // 2. Logika menjalankan fitur spesifik
+        const filePath = path.join(pluginsDir, `${feature}.js`);
+        
+        if (fs.existsSync(filePath)) {
+            // Gunakan path relatif untuk import di Vercel
+            const plugin = await import(`../plugins/${feature}.js`);
+            return await plugin.default(req, res);
+        } else {
+            return res.status(404).json({ 
+                status: false, 
+                message: `Fitur '${feature}' tidak ditemukan di folder plugins.` 
+            });
         }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            status: false, 
+            error: "Internal Server Error",
+            details: error.message 
+        });
     }
 }
