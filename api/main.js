@@ -2,12 +2,12 @@ import fs from 'fs';
 import path from 'path';
 
 export default async function handler(req, res) {
-    // Tentukan path folder plugins secara absolut
-    const pluginsDir = path.join(process.cwd(), 'plugins');
     const { feature } = req.query;
+    const pluginsDir = path.join(process.cwd(), 'plugins');
+
+    console.log("Mencari plugin di:", pluginsDir); // Cek di Logs Vercel
 
     try {
-        // 1. Logika untuk UI (ambil daftar semua plugin)
         if (!feature) {
             const pluginFiles = fs.readdirSync(pluginsDir).filter(f => f.endsWith('.js'));
             const data = await Promise.all(pluginFiles.map(async (file) => {
@@ -17,25 +17,26 @@ export default async function handler(req, res) {
             return res.status(200).json(data);
         }
 
-        // 2. Logika menjalankan fitur spesifik
-        const filePath = path.join(pluginsDir, `${feature}.js`);
-        
+        // Paksa ke lowercase agar tidak ada salah ketik
+        const target = feature.toLowerCase();
+        const filePath = path.join(pluginsDir, `${target}.js`);
+
+        console.log("Target file:", filePath);
+
         if (fs.existsSync(filePath)) {
-            // Gunakan path relatif untuk import di Vercel
-            const plugin = await import(`../plugins/${feature}.js`);
+            const plugin = await import(`../plugins/${target}.js`);
             return await plugin.default(req, res);
         } else {
             return res.status(404).json({ 
                 status: false, 
-                message: `Fitur '${feature}' tidak ditemukan di folder plugins.` 
+                message: `File plugins/${target}.js tidak ada.` 
             });
         }
     } catch (error) {
-        console.error(error);
+        console.error("ERROR UTAMA:", error.message);
         return res.status(500).json({ 
             status: false, 
-            error: "Internal Server Error",
-            details: error.message 
+            error: error.message 
         });
     }
 }
