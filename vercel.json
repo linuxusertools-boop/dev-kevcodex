@@ -1,13 +1,14 @@
 {
   "version": 2,
+  "functions": {
+    "api/main.js": {
+      "includeFiles": "plugins/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/api",
       "destination": "/api/main.js"
-    },
-    {
-      "source": "/api/:feature",
-      "destination": "/api/main.js?feature=:feature"
     }
   ]
 }
