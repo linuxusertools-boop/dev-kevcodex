@@ -1,6 +1,13 @@
 {
+  "version": 2,
   "rewrites": [
-    { "source": "/api", "destination": "/api/main.js" },
-    { "source": "/api/:path*", "destination": "/api/main.js?feature=:path*" }
+    {
+      "source": "/api",
+      "destination": "/api/main.js"
+    },
+    {
+      "source": "/api/:feature",
+      "destination": "/api/main.js?feature=:feature"
+    }
   ]
 }
