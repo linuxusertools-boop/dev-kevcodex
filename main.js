@@ -32,26 +32,3 @@ export default async function handler(req, res) {
         }
     }
 }
-        code:hover { background: var(--primary); color: white; }
-        footer { text-align: center; padding: 60px 0; color: var(--text-sub); font-size: 0.85rem; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body>
-    <div class="header-banner"></div>
-    <nav><div class="logo">KEV.SOFT</div><div style="font-size:0.8rem;font-weight:600">Scyllora V9</div></nav>
-    <div class="main-container">
-        <section class="soft-card">
-            <h1>dev-kevcodex api</h1>
-            <p style="color:var(--text-sub)">Ditemukan <b>${loadedPlugins.length}</b> fitur aktif dalam sistem.</p>
-        </section>
-        <section class="soft-card">
-            <h2>API Documentation</h2>
-            ${listHtml}
-        </section>
-        <footer>&copy; 2026 KEV.SOFT | powered by kevcodex.</footer>
-    </div>
-</body>
-</html>
-    `);
-}
