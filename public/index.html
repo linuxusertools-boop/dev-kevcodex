@@ -6,277 +6,66 @@
     <title>Scyllora V9 | API Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-light: #4cc9f0;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-sub: #64748b;
-            --border: #f1f5f9;
-            --success: #22c55e;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0;
-            background: var(--bg);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        .header-banner {
-            width: 100%;
-            height: 220px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .header-banner h1 {
-            font-size: 2.5rem;
-            margin: 0;
-            letter-spacing: -2px;
-            font-weight: 800;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .header-banner p {
-            margin-top: 10px;
-            opacity: 0.9;
-            font-weight: 600;
-        }
-
-        .main-container {
-            max-width: 900px;
-            margin: -50px auto 50px;
-            padding: 0 20px;
-        }
-
-        .soft-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 16px;
-            background: #f0fdf4;
-            color: var(--success);
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--success);
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
-        .category-title {
-            font-size: 0.8rem;
-            font-weight: 800;
-            color: var(--text-sub);
-            text-transform: uppercase;
-            margin: 30px 0 15px;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .category-title::before {
-            content: '';
-            width: 4px;
-            height: 16px;
-            background: var(--primary);
-            margin-right: 10px;
-            border-radius: 2px;
-        }
-
-        .api-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
+        :root { --primary: #4361ee; --bg: #f8fafc; --card-bg: #ffffff; --text-main: #1e293b; --text-sub: #64748b; --border: #f1f5f9; --success: #22c55e; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text-main); }
+        .header-banner { width: 100%; height: 200px; background: linear-gradient(135deg, var(--primary), #4cc9f0); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
+        .main-container { max-width: 800px; margin: -40px auto 50px; padding: 0 20px; }
+        .soft-card { background: var(--card-bg); border-radius: 24px; padding: 30px; margin-bottom: 25px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .status-badge { display: inline-flex; align-items: center; padding: 6px 15px; background: #f0fdf4; color: var(--success); border-radius: 100px; font-size: 0.8rem; font-weight: 700; margin-bottom: 15px; }
+        .status-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-right: 8px; }
+        .category-title { font-size: 0.75rem; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin: 30px 0 10px; letter-spacing: 1.5px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .api-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--border); }
         .api-item:last-child { border-bottom: none; }
-
-        .api-info h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--text-main);
-        }
-
-        .api-info p {
-            margin: 4px 0 0;
-            font-size: 0.9rem;
-            color: var(--text-sub);
-        }
-
-        .api-link {
-            background: #f1f5ff;
-            color: var(--primary);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
-
-        .api-link:hover {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .loading-spinner {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-sub);
-        }
-
-        .error-msg {
-            color: #ef4444;
-            background: #fef2f2;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        @media (max-width: 600px) {
-            .api-item { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .api-link { width: 100%; text-align: center; }
-        }
+        .api-link { background: #f1f5ff; color: var(--primary); padding: 8px 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; text-decoration: none; cursor: pointer; transition: 0.2s; }
+        .api-link:hover { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
-
     <div class="header-banner">
-        <h1>SCYLLORA V9</h1>
-        <p>Advanced API Engine Powered by KevCodex ✧</p>
+        <h1 style="font-size: 2.5rem; margin: 0; letter-spacing: -2px; font-weight: 800;">SCYLLORA V9</h1>
+        <p style="opacity: 0.9; font-weight: 600;">Advanced API Engine Powered by KevCodex ✧</p>
     </div>
-
     <div class="main-container">
         <section class="soft-card">
-            <div class="status-badge">
-                <div class="status-dot"></div>
-                <span id="system-status">System Initializing...</span>
-            </div>
-            <h2 style="margin: 5px 0 0; font-size: 1.4rem;">API Dashboard</h2>
-            <p id="feature-count" style="color: var(--text-sub); margin: 5px 0 0;">Menghubungkan ke server...</p>
+            <div class="status-badge"><div class="status-dot"></div> <span id="system-status">System Initializing...</span></div>
+            <h2 id="feature-count" style="margin: 0; font-size: 1.2rem;">Menghubungkan ke API...</h2>
         </section>
-
-        <section class="soft-card">
-            <div id="api-list-container">
-                <div class="loading-spinner">Memuat daftar fitur...</div>
-            </div>
+        <section class="soft-card" id="api-list-container">
+            <p style="text-align: center; color: var(--text-sub);">Memuat daftar fitur...</p>
         </section>
     </div>
-
     <script>
         async function loadDocs() {
             const statusEl = document.getElementById('system-status');
             const countEl = document.getElementById('feature-count');
-            const listContainer = document.getElementById('api-list-container');
-
+            const container = document.getElementById('api-list-container');
             try {
-                // Melakukan fetch ke /api yang merupakan rewrite dari api/main.js
                 const response = await fetch('/api');
-                
-                if (!response.ok) {
-                    throw new Error(`Server merespon dengan status ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const plugins = await response.json();
-
                 if (Array.isArray(plugins)) {
                     statusEl.innerText = "System Online";
                     countEl.innerText = `${plugins.length} Fitur Aktif Terdeteksi`;
-
-                    if (plugins.length === 0) {
-                        listContainer.innerHTML = `<p style="text-align:center; color:var(--text-sub);">Belum ada plugin yang terpasang di folder /plugins.</p>`;
-                        return;
-                    }
-
-                    // Pengelompokan berdasarkan kategori
                     const categories = {};
                     plugins.forEach(p => {
-                        const cat = p.category || "Uncategorized";
-                        if (!categories[cat]) categories[cat] = [];
-                        categories[cat].push(p);
+                        const cat = p.category || "General";
+                        if (!categories[cat]) categories[cat] = "";
+                        categories[cat] += `
+                            <div class="api-item">
+                                <div><strong>${p.name || p.id}</strong><br><small style="color:var(--text-sub)">${p.description || 'No description'}</small></div>
+                                <a class="api-link" onclick="window.open('/api?feature=${p.id}', '_blank')">Execute</a>
+                            </div>`;
                     });
-
-                    let finalHtml = "";
-                    for (const catName in categories) {
-                        finalHtml += `<div class="category-title">${catName}</div>`;
-                        categories[catName].forEach(plugin => {
-                            finalHtml += `
-                                <div class="api-item">
-                                    <div class="api-info">
-                                        <h3>${plugin.name || plugin.id}</h3>
-                                        <p>${plugin.description || 'Tidak ada deskripsi tersedia.'}</p>
-                                    </div>
-                                    <a class="api-link" onclick="window.open('/api?feature=${plugin.id}', '_blank')">
-                                        Open Endpoint
-                                    </a>
-                                </div>
-                            `;
-                        });
-                    }
-                    listContainer.innerHTML = finalHtml;
-                } else {
-                    throw new Error("Format data yang diterima bukan Array.");
+                    let html = "";
+                    for (const name in categories) html += `<div class="category-title">${name}</div>${categories[name]}`;
+                    container.innerHTML = html || "<p style='text-align:center'>Belum ada plugin terdeteksi.</p>";
                 }
-
-            } catch (error) {
-                console.error("Dashboard Error:", error);
-                statusEl.innerText = "System Error";
-                statusEl.parentElement.style.background = "#fef2f2";
-                statusEl.parentElement.style.color = "#ef4444";
-                document.querySelector('.status-dot').style.background = "#ef4444";
-                
-                countEl.innerText = "Gagal memuat data dari server.";
-                listContainer.innerHTML = `
-                    <div class="error-msg">
-                        Terjadi Kesalahan: ${error.message}<br>
-                        <small style="font-weight:400">Pastikan folder 'plugins' tidak kosong dan backend sudah terdeploy.</small>
-                    </div>
-                `;
+            } catch (e) {
+                statusEl.innerText = "System Offline";
+                countEl.innerText = "Gagal memuat data server.";
+                container.innerHTML = `<p style="color:red; text-align:center;">Error: ${e.message}</p>`;
             }
         }
-
-        // Jalankan saat halaman dimuat
         window.onload = loadDocs;
     </script>
 </body>
