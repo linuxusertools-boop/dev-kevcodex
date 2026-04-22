@@ -6,9 +6,11 @@ export default async function handler(req, res) {
     const pluginsDir = path.join(process.cwd(), 'plugins');
 
     try {
+        // Mode List: Menampilkan semua plugin yang tersedia
         if (!feature) {
             if (!fs.existsSync(pluginsDir)) return res.status(200).json([]);
             const pluginFiles = fs.readdirSync(pluginsDir).filter(f => f.endsWith('.js'));
+            
             const data = await Promise.all(pluginFiles.map(async (file) => {
                 const pluginPath = path.join(process.cwd(), 'plugins', file);
                 const { config } = await import(`file://${pluginPath}`);
@@ -17,7 +19,7 @@ export default async function handler(req, res) {
             return res.status(200).json(data);
         }
 
-        // Fix: Pastikan feature bersih dari karakter aneh
+        // Mode Execute: Menjalankan plugin tertentu
         const target = feature.toLowerCase().replace(/[^a-z0-9-]/g, '');
         const filePath = path.join(pluginsDir, `${target}.js`);
 
@@ -30,9 +32,11 @@ export default async function handler(req, res) {
             }
         } 
         
-        return res.status(404).json({ status: false, message: `Feature ${target} not found.` });
+        return res.status(404).json({ status: false, message: `Feature '${target}' tidak ditemukan.` });
 
     } catch (error) {
         return res.status(500).json({ status: false, error: error.message });
+    }
+}
     }
 }
