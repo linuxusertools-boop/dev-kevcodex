@@ -1,45 +1,39 @@
-import fs from 'fs';
-import path from 'path';
+𝗂𝗆𝗉𝗈𝗋𝗍 ᖴՏ ƒяσм 'ʄֆ';
+ɨʍքօʀȶ 𝖕𝖆𝖙𝖍 𝒻ᵣₒₘ 'ᵖᵃᵗʰ';
 
-export default async function handler(req, res) {
-    // Tambahkan Header CORS agar Frontend bisa mengakses API
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+ᵉˣᵖᵒʳᵗ ᵈᵉᶠᵃᵘˡᵗ ₐₛᵧₙ𝒸 𝒻ᵤₙ𝒸ₜᵢₒₙ ᕼඞᙁᙃᒐᙓᖇ(ᖇᙓᕋ, 𝕣𝕖𝕤) {
+    // 𝐻𝑒𝒶𝒹𝑒𝓇 𝐂𝐎𝐑𝐒 ɑׁׅᧁׁɑׁׅꭈׁׅ 𝘧𝘳𝘰𝘯𝘵𝘦𝘯𝘥 bisa αksҽs
+    𝘳𝘦𝘴.𝘴𝘦𝘵𝘏𝘦𝘢𝘥𝘦𝘳('𝘈𝘤𝘤𝘦𝘴𝘴-𝘊𝘰𝘯𝘵𝘳𝘰𝘭-𝘈𝘭𝘭𝘰𝘸-𝘖𝘳𝘪𝘨𝘪𝘯', '*');
+    ᵣₑₛ.ₛₑₜₕₑₐ𝒹ₑᵣ('ₐ𝒸𝒸ₑₛₛ-𝒸ₒₙₜᵣₒₗ-ₐₗₗₒ𝓌-ₘₑₜₕₒ𝒹ₛ', '𝙂𝙀𝙏,𝙊𝙋𝙏𝙄𝙊𝙉𝙎');
+    
+    𝚌𝚘𝚗𝚜𝚝 { ƒєαтυяє } = 𝓇𝑒𝓆.𝓆𝓊𝑒𝓇𝓎;
+    Ꮯ𐒀𐒐ᎦᎿ 𝗉𝗅𝗎𝗀𝗂𝗇𝗌𝖣𝗂𝗋 = 𝚙𝚊𝚝𝚑.𝚛𝚎𝚜𝚘𝚕𝚟𝚎(𝚙𝚛𝚘𝚌𝚎𝚜𝚜.𝚌𝚠𝚍(), '𝗽𝗹𝘂𝗴𝗶𝗻𝘀');
 
-    if (req.method === 'OPTIONS') return res.status(200).end();
-
-    const { feature } = req.query;
-    const pluginsDir = path.join(process.cwd(), 'plugins');
-
-    try {
-        if (!feature) {
-            // Cek apakah folder plugins ada
-            if (!fs.existsSync(pluginsDir)) return res.status(200).json([]);
-            
-            const pluginFiles = fs.readdirSync(pluginsDir).filter(f => f.endsWith('.js'));
-            const data = await Promise.all(pluginFiles.map(async (file) => {
-                const pluginPath = path.join(process.cwd(), 'plugins', file);
-                // Tambahkan file:// untuk kompatibilitas Linux/Vercel ESM
-                const { config } = await import(`file://${pluginPath}`);
-                return { id: file.replace('.js', ''), ...config };
+    𝐭𝐫𝐲 {
+        𝕚𝕗 (!𝒇𝒆𝒂𝒕𝒖𝒓𝒆) {
+            𝔦𝔣 (!𝕗𝕤.𝕖𝕩𝕚𝕤𝕥𝕤𝕊𝕪𝕟𝕔(𝕡𝕝𝕦𝕘𝕚𝕟𝕤𝔻𝕚𝕣)) 𝐫𝐞𝐭𝐮𝐫𝐧 ꋪꏂꇙ.ꇙ꓄ꋬ꓄꒤ꇙ(200).꒻ꇙꄲꋊ([]);
+            ¢ðñ§† ᵖˡᵘᵍᶦⁿᶠᶦˡᵉˢ = Բઽ.Ր૯คძძɿՐઽעՈ८(ƿՆ౮૭ɿՈઽძɿՐ).ԲɿՆ੮૯Ր(Բ => ғ.ᴇɴᴅsᴡɪᴛʜ('.ᴊs'));
+            ᶜᵒⁿˢᵗ 𝘥𝘢𝘵𝘢 = αɯαιƚ 𝙋𝙧𝙤𝙢𝙞𝙨𝙚.𝙖𝙡𝙡(𝙥𝙡𝙪𝙜𝙞𝙣𝙁𝙞𝙡𝙚𝙨.𝙢𝙖𝙥(𝙖𝙨𝙮𝙣𝙘 (£ïlê) => {
+                ꉔꄲꋊꇙ꓄ 𝖕𝖑𝖚𝖌𝖎𝖓𝕻𝖆𝖙𝖍 = ꉣꍏ꓄ꃅ.ꋪꍟꑄꂦ꒒꒦ꍟ(ꉣ꒒ꀎꁅꀤꂚꑄꀸꀤꋪ, ᖴꙆᒐᙓ);
+                𝔠𝔬𝔫𝔰𝔱 { ƈօռʄɨɢ } = 𝑎𝑤𝑎𝑖𝑡 𝖎𝖒𝖕𝖔𝖗𝖙(`𝖋𝖎𝖑𝖊://${𝖕𝖑𝖚𝖌𝖎𝖓𝕻𝖆𝖙𝖍}`);
+                𝙧𝙚𝙩𝙪𝙧𝙣 { іძ: ꎇꀤ꒒ꍟ.ꋪꍟꉣ꒒ꍏꏳꍟ('.ꀭꑄ', ''), ...𝐜𝐨𝐧𝐟𝐢𝐠 };
             }));
-            return res.status(200).json(data);
+            ɾҽƚυɾɳ ᎡᎬՏ.ՏͲᎪͲႮՏ(200).ᎫՏϴΝ(ᎠᎪͲᎪ);
         }
 
-        // Logika eksekusi fitur (seperti fakedana atau cek-otp)
-        const target = feature.toLowerCase().replace(/[^a-z0-9-]/g, '');
-        const filePath = path.join(pluginsDir, `${target}.js`);
+        Ꮯ𐒀𐒐ᎦᎿ †årgê† = 𝖿ᥱᥲ𝗍ᥙrᥱ.𝗍᥆ᥣ᥆ᥕᥱrᥴᥲsᥱ().rᥱ⍴ᥣᥲᥴᥱ(/[^ᥲ-z0-9-]/g, '');
+        𝚌𝚘𝚗𝚜𝚝 բílҽթαԵհ = ⍴ᥲ𝗍һ.rᥱs᥆ᥣ᥎ᥱ(⍴ᥣᥙgіᥒsძіr, `${тαяgєт}.ʝѕ`);
 
-        if (fs.existsSync(filePath)) {
-            const pluginPath = path.join(process.cwd(), 'plugins', `${target}.js`);
-            const plugin = await import(`file://${pluginPath}`);
-            if (typeof plugin.default === 'function') {
-                return await plugin.default(req, res);
+        ꒐ꊰ (𝒻ₛ.ₑₓᵢₛₜₛₛᵧₙ𝒸(𝒻ᵢₗₑₚₐₜₕ)) {
+            𝖼𝗈𝗇𝗌𝗍 թlմցíղ = 𝔞𝔴𝔞𝔦𝔱 𝓲𝓶𝓹𝓸𝓻𝓽(`𝓯𝓲𝓵𝓮://${𝓯𝓲𝓵𝓮𝓟𝓪𝓽𝓱}`);
+            𝔦𝔣 (𝚝𝚢𝚙𝚎𝚘𝚏 թlմցíղ.ժҽբαմlԵ === 'ϝυɳƈƚισɳ') {
+                ꋪꍟ꓄ꀎꋪꂚ ₐ𝓌ₐᵢₜ 𝑝𝑙𝑢𝑔𝑖𝑛.𝑑𝑒𝑓𝑎𝑢𝑙𝑡(𝑟𝑒𝑞, 𝘳𝘦𝘴);
             }
         } 
-        return res.status(404).json({ status: false, message: `Feature ${target} not found.` });
-    } catch (error) {
-        return res.status(500).json({ status: false, error: error.message });
+        
+        ᏒᏋᎿᏬᏒ𐒐 𝗋𝖾𝗌.𝗌𝗍𝖺𝗍𝗎𝗌(𝟦𝟢𝟦).𝗃𝗌𝗈𝗇({ s𝗍ᥲ𝗍ᥙs: ᶠᵃˡˢᵉ, ꩇׁׅ֪݊ ꫀׁׅܻׅ݊꯱ׅ꯱ɑׁׅᧁׁꫀׁׅܻ݊: `ғᴇᴀᴛᴜʀᴇ ${ͲᎪᎡᏀᎬͲ} 𝑛𝑜𝑡 ܻ⨍ᨵׁׅׅυׁׅ݊ꪀժׁׅ݊.` });
+
+    } 𝒄𝒂𝒕𝒄𝒉 (ᙓᖇᖇOᖇ) {
+        ɾҽƚυɾɳ rê§.§†å†µ§(500).j§ðñ({ 𝕤𝕥𝕒𝕥𝕦𝕤: fმსაჹ, 𝙚𝙧𝙧𝙤𝙧: ᙓᖇᖇOᖇ.ᙏᙓᔑᔑඞᘜᙓ });
     }
 }
