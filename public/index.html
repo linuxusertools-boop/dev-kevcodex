@@ -3,60 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scyllora | Full API Docs</title>
+    <title>Scyllora V9 | API Docs</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #4361ee; --bg: #f8fafc; --card-bg: #ffffff; --text-main: #1e293b; --text-sub: #64748b; --border: #f1f5f9; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text-main); }
-        .header-banner { width: 100%; height: 200px; background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhDTQuoLCb2VIzmEA3INcal_wyOD83Onnx2jXabpox3QlJrQCanVOlZBbk&s=10') center/cover; position: relative; }
-        .main-container { max-width: 800px; margin: -50px auto 50px; padding: 0 20px; position: relative; }
-        .soft-card { background: var(--card-bg); border-radius: 24px; padding: 30px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .category-title { font-size: 0.8rem; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin: 25px 0 10px; letter-spacing: 1px; }
-        .api-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
-        code { background: #eef2ff; color: var(--primary); padding: 5px 10px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-weight: 700; }
-        code:hover { background: var(--primary); color: white; }
+        .header-banner { width: 100%; height: 180px; background: linear-gradient(135deg, #4361ee, #4cc9f0); display: flex; align-items: center; justify-content: center; color: white; }
+        .main-container { max-width: 800px; margin: -40px auto 50px; padding: 0 20px; }
+        .soft-card { background: var(--card-bg); border-radius: 24px; padding: 30px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .category-title { font-size: 0.75rem; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin: 25px 0 12px; letter-spacing: 1.5px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .api-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
+        code { background: #f0f3ff; color: var(--primary); padding: 6px 12px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        code:hover { background: var(--primary); color: white; transform: translateY(-2px); }
     </style>
 </head>
 <body>
-    <div class="header-banner"></div>
+    <div class="header-banner">
+        <h1 style="letter-spacing: -2px; font-weight: 800;">SCYLLORA V9</h1>
+    </div>
     <div class="main-container">
         <section class="soft-card">
-            <h1 style="letter-spacing: -1.5px; margin: 0;">Scyllora V9</h1>
-            <p id="status-text" style="color: var(--text-sub);">Memuat sistem API...</p>
+            <h2 style="margin: 0; font-size: 1.2rem;">System Status</h2>
+            <p id="status-text" style="color: var(--text-sub); margin: 5px 0 0;">Menghubungkan ke API...</p>
         </section>
 
         <section class="soft-card" id="api-list">
-            <h2>Full API List</h2>
-            </section>
+            <p style="text-align: center; color: var(--text-sub);">Memuat daftar fitur...</p>
+        </section>
     </div>
 
     <script>
         async function loadDocs() {
             try {
-                const response = await fetch('/api/main');
+                const response = await fetch('/api');
                 const plugins = await response.json();
                 const container = document.getElementById('api-list');
                 const statusText = document.getElementById('status-text');
 
-                statusText.innerText = `Dikelola oleh KevCodex | ${plugins.length} Fitur Aktif`;
+                if (Array.isArray(plugins)) {
+                    statusText.innerText = `Powered by KevCodex ✧ ${plugins.length} Fitur Aktif`;
+                    
+                    const categories = {};
+                    plugins.forEach(p => {
+                        const cat = p.category || "General";
+                        if (!categories[cat]) categories[cat] = "";
+                        categories[cat] += `
+                            <div class="api-item">
+                                <div><strong>${p.name || p.id}</strong><br><small style="color:var(--text-sub)">${p.description}</small></div>
+                                <code onclick="window.open('/api?feature=${p.id}', '_blank')">?feature=${p.id}</code>
+                            </div>`;
+                    });
 
-                const categories = {};
-                plugins.forEach(p => {
-                    if (!categories[p.category]) categories[p.category] = "";
-                    categories[p.category] += `
-                        <div class="api-item">
-                            <div><strong>${p.name}</strong><br><small style="color:var(--text-sub)">${p.description}</small></div>
-                            <code onclick="window.open('/api/main?feature=${p.id}', '_blank')">/api?feature=${p.id}</code>
-                        </div>`;
-                });
-
-                let htmlContent = "<h2>Full API List</h2>";
-                for (const cat in categories) {
-                    htmlContent += `<div class="category-title">${cat}</div>${categories[cat]}`;
+                    let htmlContent = "";
+                    for (const cat in categories) {
+                        htmlContent += `<div class="category-title">${cat}</div>${categories[cat]}`;
+                    }
+                    container.innerHTML = htmlContent;
                 }
-                container.innerHTML = htmlContent;
             } catch (e) {
-                console.error("Gagal memuat dokumentasi.");
+                document.getElementById('status-text').innerText = "Gagal memuat sistem.";
             }
         }
         loadDocs();
