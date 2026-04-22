@@ -10,7 +10,6 @@ export default async function handler(req, res) {
             if (!fs.existsSync(pluginsDir)) return res.status(200).json([]);
             const pluginFiles = fs.readdirSync(pluginsDir).filter(f => f.endsWith('.js'));
             const data = await Promise.all(pluginFiles.map(async (file) => {
-                // Gunakan path absolut untuk import
                 const pluginPath = path.join(process.cwd(), 'plugins', file);
                 const { config } = await import(`file://${pluginPath}`);
                 return { id: file.replace('.js', ''), ...config };
@@ -18,11 +17,11 @@ export default async function handler(req, res) {
             return res.status(200).json(data);
         }
 
-        const target = feature.toLowerCase().split('?')[0].replace(/[^a-z0-9-]/g, '');
+        // Fix: Pastikan feature bersih dari karakter aneh
+        const target = feature.toLowerCase().replace(/[^a-z0-9-]/g, '');
         const filePath = path.join(pluginsDir, `${target}.js`);
 
         if (fs.existsSync(filePath)) {
-            // Tambahkan file:// untuk kompatibilitas ESM di Linux/Vercel
             const pluginPath = path.join(process.cwd(), 'plugins', `${target}.js`);
             const plugin = await import(`file://${pluginPath}`);
             
